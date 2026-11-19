@@ -1,0 +1,9 @@
+# Netlify: gera o site com `node build.mjs` (sem dependências) e publica a pasta dist.
+# As imagens otimizadas e as de compartilhamento já vêm prontas em src/generated.
+# Variáveis opcionais (Site configuration › Environment variables): SITE_URL e UMAMI_WEBSITE_ID.
+[build]
+  command = "node build.mjs"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"

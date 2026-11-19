@@ -1,0 +1,19 @@
+{
+ "pt-home": "pt-home.jpg",
+ "pt-case-editora-futura": "pt-case-editora-futura.jpg",
+ "pt-case-mr-brain": "pt-case-mr-brain.jpg",
+ "pt-case-chatbot-handoff": "pt-case-chatbot-handoff.jpg",
+ "pt-case-futura-kids": "pt-case-futura-kids.jpg",
+ "pt-case-orbitos": "pt-case-orbitos.jpg",
+ "pt-case-designcollectors": "pt-case-designcollectors.jpg",
+ "pt-log": "pt-log.jpg",
+ "en-home": "en-home.jpg",
+ "en-case-editora-futura": "en-case-editora-futura.jpg",
+ "en-case-mr-brain": "en-case-mr-brain.jpg",
+ "en-case-chatbot-handoff": "en-case-chatbot-handoff.jpg",
+ "en-case-futura-kids": "en-case-futura-kids.jpg",
+ "en-case-orbitos": "en-case-orbitos.jpg",
+ "en-case-designcollectors": "en-case-designcollectors.jpg",
+ "en-log": "en-log.jpg",
+ "default": "pt-home.jpg"
+}

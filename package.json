@@ -1,0 +1,22 @@
+{
+  "name": "gabriela-angelique-portfolio",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Portfólio de Gabriela Angelique: Product Design, UX, Conversation Design, design systems e IA aplicada.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node build.mjs && node scripts/serve.mjs 8080",
+    "images": "node scripts/images.mjs",
+    "og": "node build.mjs && node scripts/og.mjs",
+    "assets": "node scripts/images.mjs && node scripts/icons.mjs && node build.mjs && node scripts/og.mjs && node build.mjs",
+    "audit": "node scripts/audit.mjs http://localhost:8080"
+  },
+  "devDependencies": {
+    "playwright": "^1.48.2",
+    "sharp": "^0.33.5"
+  }
+}
