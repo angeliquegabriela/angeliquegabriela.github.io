@@ -32,6 +32,8 @@ const slugify = s => String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\
 const stripMd = s => String(s ?? '').replace(/!\[[^\]]*\]\([^)]*\)/g, '').replace(/\[([^\]]+)\]\([^)]*\)/g, '$1').replace(/[*_`#>]/g, '').trim();
 const abs = p => SITE_URL + p;
 const hashOf = s => crypto.createHash('sha1').update(s).digest('hex').slice(0, 10);
+// ?v= muda quando o ícone muda, para o navegador não ficar com o favicon antigo guardado
+function iconV(f) { const p = path.join(ROOT, 'src/assets/icons', f); return fs.existsSync(p) ? `?v=${hashOf(fs.readFileSync(p)).slice(0, 8)}` : ''; }
 
 // BASE_PATH: quando o site fica numa subpasta (ex.: GitHub Pages em usuario.github.io/repositorio),
 // todos os caminhos que começam com "/" no HTML ganham esse prefixo.
@@ -343,9 +345,9 @@ function head({ lang, title, description, url, alt, og, type = 'website', ld = [
 ${altLinks}
 <meta name="theme-color" content="#0c0b0e">
 <meta name="color-scheme" content="dark">
-<link rel="icon" href="/favicon.ico" sizes="32x32">
-<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="/favicon.ico${iconV('favicon.ico')}" sizes="32x32">
+<link rel="icon" href="/favicon-32x32.png${iconV('favicon-32x32.png')}" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png${iconV('apple-touch-icon.png')}" sizes="180x180">
 <link rel="preload" href="/assets/fonts/silkscreen-latin.woff2" as="font" type="font/woff2" crossorigin>
 ${preloadImg}
 <meta property="og:type" content="${type}">
