@@ -1,5 +1,6 @@
 // Gera o favicon a partir do logo (src/assets/icons/logo.svg, o G de triângulos em dois tons de cinza).
-// Favicon sem fundo (transparente). O ícone do iPhone (apple-touch-icon) tem fundo escuro, porque o iOS não aceita transparência.
+// Favicon: só o desenho, todo branco, sem fundo. O ícone do iPhone (apple-touch-icon) usa as cores do logo
+// em fundo escuro, porque o iOS não aceita transparência.
 // Saída em src/assets/icons: favicon.ico (16, 32 e 48 px), favicon-32x32.png e apple-touch-icon.png (180 px).
 // Precisa do sharp. Rode: node scripts/icons.mjs
 import fs from 'node:fs';
@@ -13,12 +14,16 @@ let sharp;
 try { sharp = require('sharp'); } catch { sharp = createRequire('/opt/npm-tools/')('sharp'); }
 
 const SRC = path.join(DIR, 'logo.svg');
+// mesmo desenho, todo em branco: o contorno do G numa forma só (sem emendas entre os triângulos)
+const WHITE = Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 62.24" width="700" height="622"><path fill="#ffffff" d="M20 0 60 0 50 15.56 30 15.56 20 31.12 30 46.68 50 46.68 40 31.12 60 31.12 70 46.68 60 62.24 20 62.24 10 46.68 0 31.12 10 15.56Z"/></svg>');
 const BG = '#0c0b0e';
 
 // logo centralizado com respiro proporcional ao tamanho; bg = null deixa o fundo transparente
-async function icon(size, pad, bg = null) {
+async function icon(size, pad, bg = null, src = SRC) {
   const inner = Math.round(size * (1 - pad * 2));
-  const logo = await sharp(SRC, { density: 600 }).resize(inner, inner, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } }).png().toBuffer();
+  // rasteriza em alta resolução antes de reduzir; direto no tamanho final, o SVG mostra emendas entre os triângulos
+  const big = await sharp(src, { density: 600 }).png().toBuffer();
+  const logo = await sharp(big).resize(inner, inner, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } }).png().toBuffer();
   const base = bg ? Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><rect width="${size}" height="${size}" fill="${bg}"/></svg>`)
     : { create: { width: size, height: size, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } };
   return sharp(base).composite([{ input: logo, gravity: 'center' }]).png().toBuffer();
@@ -40,7 +45,7 @@ function ico(pngs) {
 
 const sizes = [16, 32, 48];
 const pngs = [];
-for (const size of sizes) pngs.push({ size, buf: await icon(size, size <= 16 ? 0 : 0.03) });
+for (const size of sizes) pngs.push({ size, buf: await icon(size, size <= 16 ? 0 : 0.03, null, WHITE) });
 fs.writeFileSync(path.join(DIR, 'favicon.ico'), ico(pngs));
 fs.writeFileSync(path.join(DIR, 'favicon-32x32.png'), pngs[1].buf);
 fs.writeFileSync(path.join(DIR, 'apple-touch-icon.png'), await icon(180, 0.16, BG));
