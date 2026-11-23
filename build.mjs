@@ -311,7 +311,7 @@ const ARROW = dir => {
   const paths = { right: 'M0 2h3V1h1v1h1v1H4v1H3V3H0z', down: 'M2 0h1v3h1V2h1v1H4v1H3v1H2V4H1V3H0V2h1v1h1z', up: 'M2 0h1v1h1v1h1v1H4V2H3v3H2V2H1v1H0V2h1V1h1z', upRight: 'M1 0h4v4H4V2H3v1H2v1H1v1H0V4h1V3h1V2h1V1H1z' };
   return `<svg class="px-arrow" viewBox="0 0 5 5" width="10" height="10" aria-hidden="true" shape-rendering="crispEdges"><path fill="currentColor" d="${paths[dir]}"/></svg>`;
 };
-const LOGO = `<svg class="logo" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M13 0L16.5 6H9.5Z M3 6H10L6.5 12Z M6.5 12L10 18H3Z M17.5 12L21 18H14Z M8.5 18H15.5L12 24Z"/></svg>`;
+const LOGO = `<svg class="logo" viewBox="0 0 70 62.24" width="23" height="20" aria-hidden="true"><path fill="#f2f3f6" d="M20 0.0 40 0.0 30 15.56 10 15.56ZM40 0.0 60 0.0 50 15.56ZM10 15.56 20 31.12 10 46.68 0 31.12ZM40 31.12 60 31.12 50 46.68ZM10 46.68 30 46.68 40 62.24 20 62.24ZM50 46.68 70 46.68 60 62.24 40 62.24Z"/><path fill="#858896" d="M40 0.0 30 15.56 50 15.56ZM10 15.56 30 15.56 20 31.12ZM20 31.12 10 46.68 30 46.68ZM60 31.12 50 46.68 70 46.68ZM30 46.68 50 46.68 40 62.24Z"/></svg>`;
 const ext = (href, label, lang, attrs = '') => `<a href="${href}" target="_blank" rel="noopener" ${attrs}>${label}${ARROW('upRight')}<span class="sr-only"> ${UI[lang].newTab}</span></a>`;
 // CV hospedado no site: a versão do idioma, ou a em português quando a outra ainda não existe.
 const CV_DIR = path.join(SRC, 'assets/cv');

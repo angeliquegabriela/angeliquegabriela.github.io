@@ -1,4 +1,5 @@
-// Gera o favicon a partir do logo (src/assets/icons/logo-source.png, logo preto em fundo transparente).
+// Gera o favicon a partir do logo (src/assets/icons/logo.svg, o G de triângulos em dois tons de cinza).
+// O fundo é o escuro do site, para os triângulos claros aparecerem também em abas claras.
 // Saída em src/assets/icons: favicon.ico (16, 32 e 48 px), favicon-32x32.png e apple-touch-icon.png (180 px).
 // Precisa do sharp. Rode: node scripts/icons.mjs
 import fs from 'node:fs';
@@ -11,15 +12,16 @@ const require = createRequire(import.meta.url);
 let sharp;
 try { sharp = require('sharp'); } catch { sharp = createRequire('/opt/npm-tools/')('sharp'); }
 
-const SRC = path.join(DIR, 'logo-source.png');
-const BG = { r: 255, g: 255, b: 255, alpha: 1 };
+const SRC = path.join(DIR, 'logo.svg');
+const BG = '#0c0b0e';
 
-// logo centralizado em fundo branco, com respiro proporcional ao tamanho
-async function icon(size, pad) {
+// logo centralizado em fundo escuro, com respiro proporcional ao tamanho; round = cantos arredondados
+async function icon(size, pad, round = true) {
   const inner = Math.round(size * (1 - pad * 2));
-  const logo = await sharp(SRC).trim().resize(inner, inner, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } }).png().toBuffer();
-  return sharp({ create: { width: size, height: size, channels: 4, background: BG } })
-    .composite([{ input: logo, gravity: 'center' }]).png().toBuffer();
+  const logo = await sharp(SRC, { density: 600 }).resize(inner, inner, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } }).png().toBuffer();
+  const r = round ? Math.round(size * 0.22) : 0;
+  const bg = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><rect width="${size}" height="${size}" rx="${r}" fill="${BG}"/></svg>`);
+  return sharp(bg).composite([{ input: logo, gravity: 'center' }]).png().toBuffer();
 }
 
 // .ico com PNGs dentro (aceito por todos os navegadores atuais)
@@ -38,8 +40,10 @@ function ico(pngs) {
 
 const sizes = [16, 32, 48];
 const pngs = [];
-for (const size of sizes) pngs.push({ size, buf: await icon(size, size <= 16 ? 0.04 : 0.08) });
+for (const size of sizes) pngs.push({ size, buf: await icon(size, size <= 16 ? 0.06 : 0.12) });
 fs.writeFileSync(path.join(DIR, 'favicon.ico'), ico(pngs));
 fs.writeFileSync(path.join(DIR, 'favicon-32x32.png'), pngs[1].buf);
-fs.writeFileSync(path.join(DIR, 'apple-touch-icon.png'), await icon(180, 0.14));
+fs.writeFileSync(path.join(DIR, 'apple-touch-icon.png'), await icon(180, 0.16, false));
 console.log('ícones: favicon.ico (16/32/48), favicon-32x32.png, apple-touch-icon.png (180)');
+// logo em PNG com fundo transparente, para usar fora do site
+await sharp(SRC, { density: 600 }).resize(1024).png().toFile(path.join(DIR, 'logo-source.png'));

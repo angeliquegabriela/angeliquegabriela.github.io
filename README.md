@@ -43,7 +43,7 @@ Links antigos no formato `#/projetos/...` redirecionam para a página nova.
 - **Ligar e desligar seções e links:** em `src/config.mjs`, `FEATURES.log` liga o Log (menu, página inicial e páginas), `FEATURES.cv` liga o CV, `FEATURES.process` liga a página Processo e `PERSON.hiddenLinks` tira redes do site sem apagar o endereço (hoje, o Behance).
 - **Quadros de processo e notas de pesquisa:** `node scripts/boards.mjs` gera os quadros no estilo FigJam (Editora Futura, Futura Kids e Mr. Brain), as notas no estilo Obsidian (Editora Futura) e a montagem da tela do Illustrator (Mr. Brain) a partir do texto dos cases, em PT e EN, como WebP em `src/assets/img/src`. As poses do Mr. Brain usadas nos quadros são recortadas das ilustrações originais (e7, e8 e e9). Para gerar só alguns, passe prefixos: `node scripts/boards.mjs ef_ mb_`. Depois, rode `npm run images`.
 - **Pacote .zip:** para caber no limite de envio, o .zip não traz `src/generated/`. Antes de rodar `node build.mjs` a partir do .zip, rode `npm install` e `npm run assets` para recriar as imagens otimizadas. Para publicar sem rodar nada, use a pasta `dist/`, que já vem pronta.
-- **Favicon:** o logo fica em `src/assets/icons/logo-source.png`; `node scripts/icons.mjs` gera `favicon.ico`, `favicon-32x32.png` e `apple-touch-icon.png` (180 × 180).
+- **Logo e favicon:** o logo fica em `src/assets/icons/logo.svg` (o do cabeçalho está em `LOGO`, no `build.mjs`); `node scripts/icons.mjs` gera `logo-source.png` (PNG transparente), `favicon.ico`, `favicon-32x32.png` e `apple-touch-icon.png` (180 × 180).
 
 ## Rodar no computador
 
